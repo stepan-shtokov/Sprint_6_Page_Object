@@ -1,8 +1,10 @@
 import allure
-import time
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.ui import WebDriverWait
 import pytest
 from helper_data.data import QuestionsList, Urls
 from locators.home_page_locators import HomePageLocators
+from locators.yandex_dzen_locators import YandexDzenLocators
 from pages.home_scooter_page import HomePage
 from pages.yandex_dzen_page import DzenPage
 
@@ -29,9 +31,8 @@ class TestMainPage:
         dzen_page = DzenPage(driver)
         main_page.yandex_logo_click()
         main_page.switch_to_the_new_tab()
-        time.sleep(5)
-        current_url = main_page.get_current_url()
-        assert current_url == Urls.YA_DZEN_URL and dzen_page.check_element_main_button
+        WebDriverWait(driver,5).until(ec.url_to_be(Urls.YA_DZEN_URL))
+        assert dzen_page.check_element_main_button
 
     @allure.title('Test "Answers to FAQ compares to expected answers text"')
     @allure.description('''1)Scroll to FAQ;
